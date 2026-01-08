@@ -10,6 +10,7 @@ interface StarRatingProps {
 }
 
 const StarRating = ({ rating = 0, onRate, readonly = false, size = 'md' }: StarRatingProps) => {
+  const [internalRating, setInternalRating] = useState(rating);
   const [hoverRating, setHoverRating] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
 
@@ -21,12 +22,13 @@ const StarRating = ({ rating = 0, onRate, readonly = false, size = 'md' }: StarR
 
   const handleClick = (star: number) => {
     if (readonly) return;
+    setInternalRating(star);
     onRate?.(star);
     setShowFeedback(true);
     setTimeout(() => setShowFeedback(false), 1500);
   };
 
-  const displayRating = hoverRating || rating;
+  const displayRating = hoverRating || internalRating;
 
   return (
     <div className="relative">
