@@ -23,6 +23,7 @@ export interface Challenge {
   title: string;
   description: string;
   recipe: string;
+  recipePrice: number;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   points: number;
   deadline: string;

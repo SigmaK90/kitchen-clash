@@ -2,8 +2,9 @@ import carbonaraImage from '@/assets/carbonara.jpg';
 import salmonImage from '@/assets/salmon.jpg';
 import { useState } from 'react';
 import { Dish, Friend } from '@/types';
-import { Star, Trophy, ArrowLeftRight } from 'lucide-react';
+import { Trophy, ArrowLeftRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import StarRating from './StarRating';
 
 const myDishes: Dish[] = [
   {
@@ -33,6 +34,7 @@ interface DishComparisonProps {
 
 const DishComparison = ({ friend, onClose }: DishComparisonProps) => {
   const [selectedMyDish, setSelectedMyDish] = useState<Dish | null>(myDishes[0]);
+  const [friendDishRating, setFriendDishRating] = useState<number>(0);
 
   const friendDish = friend.recentDish;
 
@@ -100,9 +102,9 @@ const DishComparison = ({ friend, onClose }: DishComparisonProps) => {
                 className="w-full aspect-square rounded-xl object-cover mb-3"
               />
               <h4 className="font-semibold text-foreground">{selectedMyDish.name}</h4>
-              <div className="flex items-center justify-center gap-1 mt-1">
-                <Star className="h-4 w-4 fill-chart-1 text-chart-1" />
-                <span className="text-lg font-bold text-foreground">{selectedMyDish.rating}</span>
+              <div className="flex items-center justify-center gap-1 mt-2">
+                <StarRating rating={Math.round(selectedMyDish.rating)} readonly size="sm" />
+                <span className="text-sm text-muted-foreground ml-1">({selectedMyDish.rating})</span>
               </div>
               {winner === 'you' && (
                 <div className="mt-3 flex items-center justify-center gap-1 text-primary">
@@ -140,10 +142,22 @@ const DishComparison = ({ friend, onClose }: DishComparisonProps) => {
                 className="w-full aspect-square rounded-xl object-cover mb-3"
               />
               <h4 className="font-semibold text-foreground">{friendDish.name}</h4>
-              <div className="flex items-center justify-center gap-1 mt-1">
-                <Star className="h-4 w-4 fill-chart-1 text-chart-1" />
-                <span className="text-lg font-bold text-foreground">{friendDish.rating}</span>
+              <div className="flex items-center justify-center gap-1 mt-2">
+                <span className="text-sm text-muted-foreground mr-2">Avg: {friendDish.rating}</span>
               </div>
+              
+              {/* Star rating for friend's dish */}
+              <div className="mt-3 p-3 rounded-lg bg-card border border-border">
+                <p className="text-xs text-muted-foreground mb-2">Rate this dish:</p>
+                <div className="flex justify-center">
+                  <StarRating 
+                    rating={friendDishRating} 
+                    onRate={setFriendDishRating}
+                    size="md"
+                  />
+                </div>
+              </div>
+              
               {winner === 'friend' && (
                 <div className="mt-3 flex items-center justify-center gap-1 text-primary">
                   <Trophy className="h-4 w-4" />
