@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Challenge } from '@/types';
-import { Clock, Users, Star, Check, ChevronRight } from 'lucide-react';
+import { Clock, Users, Star, Check, ChevronRight, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -69,10 +69,14 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
         <h3 className="text-xl font-bold text-foreground mb-2">{challenge.title}</h3>
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{challenge.description}</p>
 
-        {/* Recipe hint */}
+        {/* Recipe hint with price */}
         <div className="mb-4 rounded-lg bg-accent p-3">
           <p className="text-xs text-muted-foreground mb-1">Suggested Recipe</p>
           <p className="text-sm font-medium text-accent-foreground">{challenge.recipe}</p>
+          <div className="flex items-center gap-1 mt-2 text-sm text-muted-foreground">
+            <DollarSign className="h-3.5 w-3.5" />
+            <span>Est. cost: <span className="font-semibold text-foreground">${challenge.recipePrice.toFixed(2)}</span></span>
+          </div>
         </div>
 
         {/* Meta */}
