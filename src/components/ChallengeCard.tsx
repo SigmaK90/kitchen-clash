@@ -12,7 +12,7 @@ import {
 import DishSubmissionForm, { DishSubmission } from './DishSubmissionForm';
 import ChallengeSubmissions from './ChallengeSubmissions';
 import { Submission } from './SubmissionCard';
-import { mockOtherSubmissions } from '@/data/mockSubmissions';
+import { getSubmissionsForChallenge } from '@/data/mockSubmissions';
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -26,7 +26,9 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
   const [showSubmissions, setShowSubmissions] = useState(false);
   const [mySubmission, setMySubmission] = useState<Submission | null>(null);
-  const [otherSubmissions, setOtherSubmissions] = useState<Submission[]>(mockOtherSubmissions);
+  const [otherSubmissions, setOtherSubmissions] = useState<Submission[]>(
+    getSubmissionsForChallenge(challenge.id)
+  );
 
   const handleJoinClick = () => {
     setShowSubmissionForm(true);
