@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Challenge } from '@/types';
-import { Clock, Users, Star, Check, ChevronRight, DollarSign } from 'lucide-react';
+import { Clock, Users, Star, Check, ChevronRight, DollarSign, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -10,6 +10,9 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import DishSubmissionForm, { DishSubmission } from './DishSubmissionForm';
+import ChallengeSubmissions from './ChallengeSubmissions';
+import { Submission } from './SubmissionCard';
+import { mockOtherSubmissions } from '@/data/mockSubmissions';
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -21,6 +24,9 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
   const [isJoined, setIsJoined] = useState(challenge.isJoined);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
+  const [showSubmissions, setShowSubmissions] = useState(false);
+  const [mySubmission, setMySubmission] = useState<Submission | null>(null);
+  const [otherSubmissions, setOtherSubmissions] = useState<Submission[]>(mockOtherSubmissions);
 
   const handleJoinClick = () => {
     setShowSubmissionForm(true);
@@ -30,8 +36,57 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
     setShowSubmissionForm(false);
     setIsJoined(true);
     setShowFeedback(true);
+    
+    // Create the user's submission
+    const newSubmission: Submission = {
+      id: 'my-submission',
+      name: dish.name,
+      prepTime: dish.prepTime,
+      cost: dish.cost,
+      ingredients: dish.ingredients,
+      tags: dish.tags,
+      image: dish.image,
+      userName: 'You',
+      userAvatar: 'https://i.pravatar.cc/100?img=3',
+      rating: 0,
+      isOwn: true,
+    };
+    setMySubmission(newSubmission);
+    
     onJoin?.(challenge.id, dish);
     setTimeout(() => setShowFeedback(false), 2000);
+  };
+
+  const handleViewSubmissions = () => {
+    setShowSubmissions(true);
+  };
+
+  const handleEditSubmission = (dish: DishSubmission) => {
+    if (mySubmission) {
+      setMySubmission({
+        ...mySubmission,
+        name: dish.name,
+        prepTime: dish.prepTime,
+        cost: dish.cost,
+        ingredients: dish.ingredients,
+        tags: dish.tags,
+        image: dish.image,
+      });
+    }
+  };
+
+  const handleDeleteSubmission = () => {
+    setMySubmission(null);
+    setIsJoined(false);
+    setShowSubmissions(false);
+  };
+
+  const handleRateSubmission = (submissionId: string, rating: number) => {
+    setOtherSubmissions(prev =>
+      prev.map(sub =>
+        sub.id === submissionId ? { ...sub, rating } : sub
+      )
+    );
   };
 
   const difficultyColor = {
@@ -105,35 +160,47 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
             </span>
           </div>
 
-          {/* Action */}
+          {/* Actions */}
           {challenge.deadline !== 'Completed' && (
-            <Button
-              onClick={handleJoinClick}
-              disabled={isJoined}
-              className={cn(
-                'w-full transition-all duration-300',
-                isJoined && 'bg-accent-foreground hover:bg-accent-foreground'
-              )}
-            >
+            <div className="flex gap-2">
               {isJoined ? (
                 <>
-                  <Check className="mr-2 h-4 w-4" />
-                  Joined!
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={handleViewSubmissions}
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    View Submissions
+                  </Button>
+                  <Button
+                    disabled
+                    className="bg-accent-foreground hover:bg-accent-foreground"
+                  >
+                    <Check className="h-4 w-4" />
+                  </Button>
                 </>
               ) : (
-                <>
+                <Button
+                  onClick={handleJoinClick}
+                  className="w-full transition-all duration-300"
+                >
                   Join Challenge
                   <ChevronRight className="ml-2 h-4 w-4" />
-                </>
+                </Button>
               )}
-            </Button>
+            </div>
           )}
 
           {challenge.deadline === 'Completed' && (
-            <div className="flex items-center justify-center gap-2 rounded-lg bg-muted py-3 text-muted-foreground">
-              <Check className="h-4 w-4" />
-              <span className="text-sm font-medium">Completed</span>
-            </div>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={handleViewSubmissions}
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              View All Dishes
+            </Button>
           )}
         </div>
 
@@ -159,6 +226,24 @@ const ChallengeCard = ({ challenge, featured = false, onJoin }: ChallengeCardPro
             challengeTitle={challenge.title}
             onSubmit={handleDishSubmit}
             onCancel={() => setShowSubmissionForm(false)}
+          />
+        </SheetContent>
+      </Sheet>
+
+      {/* Submissions View Sheet */}
+      <Sheet open={showSubmissions} onOpenChange={setShowSubmissions}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Challenge Submissions</SheetTitle>
+          </SheetHeader>
+          <ChallengeSubmissions
+            challengeTitle={challenge.title}
+            mySubmission={mySubmission}
+            otherSubmissions={otherSubmissions}
+            onBack={() => setShowSubmissions(false)}
+            onEditSubmission={handleEditSubmission}
+            onDeleteSubmission={handleDeleteSubmission}
+            onRateSubmission={handleRateSubmission}
           />
         </SheetContent>
       </Sheet>
