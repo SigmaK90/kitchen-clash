@@ -1,9 +1,13 @@
 import { Submission } from '@/components/SubmissionCard';
 import carbonara from '@/assets/carbonara.jpg';
-import risotto from '@/assets/risotto.jpg';
-import salmon from '@/assets/salmon.jpg';
 import omelette from '@/assets/omelette.jpg';
-import wellington from '@/assets/wellington.jpg';
+import mushroomFettuccine from '@/assets/mushroom-fettuccine.jpg';
+import arrabiataPenne from '@/assets/arrabbiata-penne.jpg';
+import eggsBenedict from '@/assets/eggs-benedict.jpg';
+import pancakes from '@/assets/pancakes.jpg';
+import frenchOnionSoup from '@/assets/french-onion-soup.jpg';
+import tomatoSoup from '@/assets/tomato-soup.jpg';
+import beefStew from '@/assets/beef-stew.jpg';
 
 // Challenge-specific submissions mapped by challenge ID
 export const challengeSubmissions: Record<string, Submission[]> = {
@@ -29,7 +33,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$15',
       ingredients: ['Fettuccine', 'Mushrooms', 'Parmesan', 'Cream', 'Garlic'],
       tags: ['Vegetarian', 'Gourmet'],
-      image: risotto,
+      image: mushroomFettuccine,
       userName: 'Gordon',
       userAvatar: 'https://i.pravatar.cc/100?img=8',
       rating: 0,
@@ -42,7 +46,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$12',
       ingredients: ['Penne', 'Tomatoes', 'Chili Flakes', 'Garlic', 'Basil'],
       tags: ['Spicy', 'Quick & Easy'],
-      image: salmon,
+      image: arrabiataPenne,
       userName: 'Sophie',
       userAvatar: 'https://i.pravatar.cc/100?img=9',
       rating: 0,
@@ -72,7 +76,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$16',
       ingredients: ['Eggs', 'Smoked Salmon', 'English Muffin', 'Hollandaise', 'Capers'],
       tags: ['Gourmet', 'Indulgent'],
-      image: salmon,
+      image: eggsBenedict,
       userName: 'Chef Maria',
       userAvatar: 'https://i.pravatar.cc/100?img=5',
       rating: 0,
@@ -85,7 +89,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$10',
       ingredients: ['Flour', 'Buttermilk', 'Eggs', 'Maple Syrup', 'Berries'],
       tags: ['Comfort Food', 'Family Recipe'],
-      image: carbonara,
+      image: pancakes,
       userName: 'Marco',
       userAvatar: 'https://i.pravatar.cc/100?img=12',
       rating: 0,
@@ -102,7 +106,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$14',
       ingredients: ['Onions', 'Beef Broth', 'Gruyère', 'Baguette', 'Thyme'],
       tags: ['Comfort Food', 'Gourmet'],
-      image: risotto,
+      image: frenchOnionSoup,
       userName: 'Gordon',
       userAvatar: 'https://i.pravatar.cc/100?img=8',
       rating: 0,
@@ -115,7 +119,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$10',
       ingredients: ['Tomatoes', 'Basil', 'Cream', 'Garlic', 'Onion'],
       tags: ['Vegetarian', 'Healthy'],
-      image: carbonara,
+      image: tomatoSoup,
       userName: 'Sophie',
       userAvatar: 'https://i.pravatar.cc/100?img=9',
       rating: 0,
@@ -128,7 +132,7 @@ export const challengeSubmissions: Record<string, Submission[]> = {
       cost: '$22',
       ingredients: ['Beef Chuck', 'Carrots', 'Potatoes', 'Red Wine', 'Herbs'],
       tags: ['Comfort Food', 'Family Recipe'],
-      image: wellington,
+      image: beefStew,
       userName: 'Julia',
       userAvatar: 'https://i.pravatar.cc/100?img=10',
       rating: 0,
